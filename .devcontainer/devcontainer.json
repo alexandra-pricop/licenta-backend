@@ -1,0 +1,63 @@
+{
+    "name": "conta_rails_backend",
+    "service": "app",
+    "dockerComposeFile": "docker-compose.yml",
+    "workspaceFolder": "/workspace",
+    "settings": { 
+      "sqltools.connections": [
+        {
+          "name": "Development Db",
+          "driver": "PostgreSQL",
+          "previewLimit": 50,
+          "server": "localhost",
+          "port": 5432,
+  
+          // update this to match config/database.yml
+          "database": "conta_development",
+          "username": "postgres"
+        },
+        {
+          "name": "Test Db",
+          "driver": "PostgreSQL",
+          "previewLimit": 50,
+          "server": "localhost",
+          "port": 5432,
+  
+          // update this to match config/database.yml
+          "database": "conta_test",
+          "username": "postgres"
+        }
+      ]
+    },
+  
+    // Add the IDs of extensions you want installed when the container is created.
+    "extensions": [
+      "rebornix.Ruby",
+      "mtxr.sqltools",
+      "mtxr.sqltools-driver-pg",
+      "castwide.solargraph",
+      "eamodio.gitlens",
+      "jnbt.vscode-rufo",
+      "sarahridge.vscode-rails-syntax"
+    ],  
+ 
+    // 5432 postgres
+    // 6379 redis
+    // 1025,8025 mailhog
+    "forwardPorts": [8025, 5432],
+    //your application may need to listen on all interfaces (0.0.0.0) not just localhost for it to be available externally. Defaults to []
+    // "appPort": [3000],
+  
+    "postCreateCommand": "yarn && rails db:setup",
+    "portsAttributes": {
+      "3000": {
+        "label": "Rails Server"
+      },
+      "8025": {
+        "label": "Mailhog UI"
+      },
+      "5432": {
+        "label": "Postgres"
+      }
+    }
+  }

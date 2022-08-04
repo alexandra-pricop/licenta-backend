@@ -1,0 +1,18 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV["DB_POOL"] || ENV['RAILS_MAX_THREADS'] || 5 %>
+  host: postgres
+  username: postgres
+  password: postgres
+
+development:
+  <<: *default
+  database: conta_development
+
+test:
+  <<: *default
+  database: conta_test
+
+production:
+  pool: <%= ENV["DB_POOL"] || ENV['RAILS_MAX_THREADS'] || 5 %>
