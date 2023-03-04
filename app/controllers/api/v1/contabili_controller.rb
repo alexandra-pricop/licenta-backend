@@ -1,6 +1,6 @@
 class Api::V1::ContabiliController < Api::V1::ApiController
   before_action :set_user, only: %i[ show update destroy ]
-  before_action :authorize_user
+  # before_action :authorize_user
 
   api :GET, '/contabili', 'Admin role: Listare contabili din aplicatie'
   def index
