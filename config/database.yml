@@ -2,9 +2,9 @@ default: &default
   adapter: postgresql
   encoding: unicode
   pool: <%= ENV["DB_POOL"] || ENV['RAILS_MAX_THREADS'] || 5 %>
-  host: postgres
+  host: localhost
   username: postgres
-  password: postgres
+  password: 123
 
 development:
   <<: *default

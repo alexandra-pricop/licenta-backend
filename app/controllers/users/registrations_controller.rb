@@ -1,6 +1,7 @@
 class Users::RegistrationsController < Devise::RegistrationsController
     respond_to :json
-    protect_from_forgery with: :null_session
+    protect_from_forgery with: :null_session,
+      if: Proc.new { |c| c.request.format =~ %r{application/json} }
     before_action :configure_sign_up_params, only: [:create]
 
     resource_description do
