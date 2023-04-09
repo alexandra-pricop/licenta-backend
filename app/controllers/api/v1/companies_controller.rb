@@ -1,8 +1,8 @@
 class Api::V1::CompaniesController < Api::V1::ApiController
   before_action :set_company, only: %i[ show update destroy ]
-  before_action :authorize_user
+  # before_action :authorize_user
 
-  
+  # Switch firm
   api :GET, '/companies', 'Toti utilizatorii: Afiseaza lista de companii din contul utilizatorului'
   returns code: 200, desc: "returns an Array of Hashes" do
     property :company, array_of: Hash do

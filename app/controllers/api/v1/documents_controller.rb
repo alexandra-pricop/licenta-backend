@@ -1,6 +1,6 @@
 class Api::V1::DocumentsController < Api::V1::ApiController
   before_action :set_company
-  before_action :authorize_user
+  # before_action :authorize_user
   
   
   api :GET, "/companies/:company_id/documents/list_categories", "Listeaza categoriile de documente si rapoarte"

@@ -14,7 +14,7 @@ class Company < ApplicationRecord
     has_many :users, through: :company_users
     has_many :documents, dependent: :restrict_with_error
 
-    enum status: [:cerere, :aprobat]
+    enum status: [:cerere, :aprobat, :refuzat]
     
     validates_uniqueness_of :name, :cui
 

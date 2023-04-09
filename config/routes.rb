@@ -25,6 +25,7 @@ Rails.application.routes.draw do
           get 'list_users'
           post 'remove_user'
           post 'update_roles'
+          get 'view_roles'
         end
       end
       resources :angajat do

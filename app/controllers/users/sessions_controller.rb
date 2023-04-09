@@ -1,6 +1,7 @@
 class Users::SessionsController < Devise::SessionsController
     respond_to :json
-    protect_from_forgery with: :null_session
+    protect_from_forgery with: :null_session,
+      if: Proc.new { |c| c.request.format =~ %r{application/json} }
 
     resource_description do
       api_base_url ''
@@ -38,14 +39,10 @@ class Users::SessionsController < Devise::SessionsController
     end
     
     def respond_to_on_destroy
-      current_user ? log_out_success : log_out_failure
+      log_out_success
     end
     
     def log_out_success
       head :ok
-    end
-    
-    def log_out_failure
-      head :unauthorized
     end
 end

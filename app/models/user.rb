@@ -26,8 +26,8 @@ class User < ApplicationRecord
 
   has_many :company_users, dependent: :destroy
   has_many :companies,  through: :company_users
-  has_many :approved_companies, -> {where("company_users.status = 1")}, source: :company, through: :company_users
-
+  # has_many :approved_companies, -> {where("company_users.status = 1")}, source: :company, through: :company_users
+  has_many :approved_companies, -> { where(company_users: { status: :aprobat }) }, source: :company, through: :company_users
   validates_presence_of :name, :email, :role
 
   def serialize

@@ -14,7 +14,7 @@ class CompanyUser < ApplicationRecord
   belongs_to :company
   belongs_to :user
 
-  enum status: [:cerere, :aprobat]
+  enum status: [:cerere, :aprobat, :refuzat]
 
   validates_uniqueness_of :user, scope: :company
   

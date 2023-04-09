@@ -1,6 +1,8 @@
 class Api::V1::AngajatController < Api::V1::ApiController
-    before_action :authorize_user
-    
+  # before_action :authorize_user
+    protect_from_forgery with: :null_session,
+      if: Proc.new { |c| c.request.format =~ %r{application/json} }
+
     api :POST, '/angajat/join_company', 'Rol angajat: Angajatul aplica la o companie'
     param :cui, String, 'CUI'
     returns code: 204, desc: "no content"
@@ -16,6 +18,7 @@ class Api::V1::AngajatController < Api::V1::ApiController
       end
     end
 
+    # My Firm Requests
     api :GET, '/angajat/list_requests', 'Rol angajat: Listeaza aplicatiile in companii in asteptare'
     def list_requests
        render json: current_user.company_users.cerere.map(&:serialize)
