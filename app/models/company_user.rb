@@ -23,8 +23,8 @@ class CompanyUser < ApplicationRecord
   end
 
   def meta_data_categories
-    categories = self.meta_data.dig('categories') || []
+    categories = self.meta_data&.dig('categories') || []
     categories.map{|category| Document.categories[category.to_sym]}
-  end
+  end  
 
 end

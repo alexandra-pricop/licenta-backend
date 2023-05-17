@@ -39,6 +39,9 @@ Rails.application.routes.draw do
           collection do
             get 'list_categories'
             get 'list_documents'
+            get 'list_reports'
+            get 'list_reports_by_category'
+            get 'list_documents_by_issue_date'
             get 'list_document'
             post 'upload_document'
             post 'approve_document'
