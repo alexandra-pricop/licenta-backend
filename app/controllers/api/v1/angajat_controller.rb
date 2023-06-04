@@ -1,7 +1,7 @@
 class Api::V1::AngajatController < Api::V1::ApiController
-  # before_action :authorize_user
-    protect_from_forgery with: :null_session,
-      if: Proc.new { |c| c.request.format =~ %r{application/json} }
+  before_action :authorize_user
+  protect_from_forgery with: :null_session,
+    if: Proc.new { |c| c.request.format =~ %r{application/json} }
 
     api :POST, '/angajat/join_company', 'Rol angajat: Angajatul aplica la o companie'
     param :cui, String, 'CUI'

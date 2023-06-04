@@ -39,6 +39,11 @@ class Api::V1::DocumentsController < Api::V1::ApiController
 
     @company_user = @company.company_users.find_by(user_id: params[:user_id])
 
+    if @company_user.meta_data.nil?
+      render json: { error: "Metadatele utilizatorului lipsesc" }, status: :unprocessable_entity
+      return
+    end
+
     unless @company_user.meta_data["categories"].include?(params[:category])
       render json: { error: "Utilizatorul nu are permisiuni" }, status: :forbidden
       return

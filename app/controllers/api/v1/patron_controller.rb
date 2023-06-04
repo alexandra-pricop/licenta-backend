@@ -1,5 +1,5 @@
 class Api::V1::PatronController < Api::V1::ApiController
-  # before_action :authorize_user
+  before_action :authorize_user
   protect_from_forgery with: :null_session,
     if: Proc.new { |c| c.request.format =~ %r{application/json} }
 
@@ -18,7 +18,8 @@ class Api::V1::PatronController < Api::V1::ApiController
   end
   def create_company
     @company = Company.new(company_params)
-    @company.company_users.build(user: current_user, status: "aprobat")
+    # Patronul trebuie sa aiba toate drepturile pe rapoarte
+    @company.company_users.build(user: current_user, status: "aprobat", meta_data: {"categories" => Document::REPORTS})
     if @company.save
       render json: { company: @company.serialize }
     else

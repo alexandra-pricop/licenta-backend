@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  put 'users/edit_account', to: 'users#edit_account'
+
   apipie
   namespace :api, defaults: {format: :json} do
     namespace :v1 do
