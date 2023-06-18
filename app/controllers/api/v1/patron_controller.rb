@@ -1,3 +1,5 @@
+require 'fcm'
+
 class Api::V1::PatronController < Api::V1::ApiController
   before_action :authorize_user
   protect_from_forgery with: :null_session,
@@ -21,6 +23,8 @@ class Api::V1::PatronController < Api::V1::ApiController
     # Patronul trebuie sa aiba toate drepturile pe rapoarte
     @company.company_users.build(user: current_user, status: "aprobat", meta_data: {"categories" => Document::REPORTS})
     if @company.save
+      # Trimite notificare de push pentru toti contabilii
+      fcm_push_notification(company_params[:name], company_params[:cui])
       render json: { company: @company.serialize }
     else
       render json: @company.errors, status: :unprocessable_entity
@@ -132,5 +136,28 @@ class Api::V1::PatronController < Api::V1::ApiController
 
   def authorize_user
     head 403 unless current_user.patron?
+  end
+
+  def fcm_push_notification(firm_name, firm_cui)
+    firebase_server_key = "AAAA_xnnZsI:APA91bHHigg8O9j4Tr0kWYkm6wtzyEB_7QqMTrhZrpuBSoPTFTeeyUTdEUIeh_XaciIQKVBKv9voXtw4PQR1i22jbJbPK9KsDYTY2HI6X6Tp2TAjx7CuG9OiZwiPdQCtDVzfgxLJZLQl"
+    fcm_client = FCM.new(firebase_server_key)
+    message = "Cerere in asteptare noua pentru firma cu numele: #{firm_name} si cuiul: #{firm_cui}"
+    image = nil
+    options = { priority: 'high',
+                data: { message: message, icon: image },
+                notification: { 
+                body: message,
+                sound: 'default',
+                icon: image,
+                tag: 'cerere'
+                }
+              }
+    registration_ids = User.where(role: ['contabil', 'contabil_sef']).pluck(:firebase_id)
+    registration_ids = [] if registration_ids.nil?
+    registration_ids = registration_ids.compact
+    registration_ids.each_slice(20) do |registration_id|
+        response = fcm_client.send(registration_id, options)
+        puts response
+    end
   end
 end

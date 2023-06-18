@@ -11,6 +11,7 @@ class Users::SessionsController < Devise::SessionsController
     param :user, Hash, :required => true do
       param :email, String, 'Email', required: true
       param :password, String, 'Password', required: true
+      param :firebase_id, String, 'Registration_Id'
     end
     error code: 401, desc: "Unauthorized"
     returns code: 200, desc: "a successful response" do
@@ -23,8 +24,10 @@ class Users::SessionsController < Devise::SessionsController
     end
     def create
       super
+      @user.firebase_id = session_params[:firebase_id]
+      @user.save
     end
-    
+
     api :DELETE, '/users/sign_out', 'Logout'
     returns code: 200, desc: "a successful response"
     def destroy
@@ -44,5 +47,9 @@ class Users::SessionsController < Devise::SessionsController
     
     def log_out_success
       head :ok
+    end
+
+    def session_params
+      params.require(:user).permit(:firebase_id, :email, :password)
     end
 end
