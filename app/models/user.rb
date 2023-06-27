@@ -35,8 +35,7 @@ class User < ApplicationRecord
   end
 
   def visible_companies
-    case role
-    when 'admin', 'contabil_sef', 'contabil'
+    if role == 'admin'
       Company.all
     else
       self.approved_companies

@@ -14,6 +14,7 @@ class CompanyUser < ApplicationRecord
   belongs_to :company
   belongs_to :user
 
+  # un patron aproba cereri de tipul angajat, companie
   enum status: [:cerere, :aprobat, :refuzat]
 
   validates_uniqueness_of :user, scope: :company

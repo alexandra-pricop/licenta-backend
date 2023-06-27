@@ -17,8 +17,10 @@ class Api::V1::ContabilController < Api::V1::ApiController
     @company = Company.cerere.find(params[:company_id])
     # @company_user = CompanyUser.find_by(company_id: params[:company_id])
     # if @company.update(status: 'aprobat') && @company_user.update(status: 'aprobat')
-    if @company.update(status: 'aprobat')
-       # Trimite notificare de push pentru patron
+    @company.status = 'aprobat'    
+    @company.company_users.build(user: current_user, status: "aprobat", meta_data: {"categories" => Document::REPORTS})
+
+    if @company.save
       fcm_push_notification(@company)
       head 204
     else
